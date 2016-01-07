@@ -8,6 +8,7 @@ describe LeanKitKanban::Board do
   describe :all do
     it "gets all boards for that account" do
       api_call = "/Boards"
+      # expect(LeanKitKanban::Board).to receive (:get).with(api_call)
       LeanKitKanban::Board.should_receive(:get).with(api_call)
       LeanKitKanban::Board.all
     end
@@ -60,6 +61,19 @@ describe LeanKitKanban::Board do
       api_call = "/Board/#{@board_id}/BoardVersion/#{@version_id}/GetBoardHistorySince"
       LeanKitKanban::Board.should_receive(:get).with(api_call)
       LeanKitKanban::Board.get_board_history_since(@board_id, @version_id)
+    end
+  end
+
+  describe :check_for_updates do
+    before :each do
+      @board_id   = double("boardID")
+      @version_id = double("versionID")
+    end
+
+    it "gets any events that have occurred with the Board since the given version" do
+      api_call = "/Board/#{@board_id}/BoardVersion/#{@version_id}/CheckForUpdates"
+      LeanKitKanban::Board.should_receive(:get).with(api_call)
+      LeanKitKanban::Board.check_for_updates(@board_id, @version_id)
     end
   end
 end
